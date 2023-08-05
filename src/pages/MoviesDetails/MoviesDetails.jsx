@@ -29,7 +29,9 @@ const MoviesDetails = () => {
     fetchData();
   }, [movieId]);
 
-  if (status === STATUS.FULLFIELD) {
+  if (status === STATUS.PENDING) {
+    return <Loader />;
+  } else if (status === STATUS.FULLFIELD) {
     return (
       <>
         <section>

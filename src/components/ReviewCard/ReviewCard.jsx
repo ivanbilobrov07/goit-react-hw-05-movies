@@ -13,8 +13,8 @@ export const ReviewCard = ({
   return (
     <div style={{ display: 'flex' }}>
       <img src={avatar} alt="Author avatar" width="100" height="100" />
-      <div>
-        <div style={{ display: 'flex' }} className="review-info-top">
+      <div style={{ width: '100%' }}>
+        <div style={{ display: 'flex' }}>
           <h3>{author}</h3>
           <p>{date}</p>
           {rating ? (
