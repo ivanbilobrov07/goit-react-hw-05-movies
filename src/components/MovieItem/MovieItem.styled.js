@@ -7,17 +7,17 @@ export const MovieLink = styled(Link)`
   height: 100%;
 `;
 
-export const MovieImageWrapper = styled.div`
+export const Wrapper = styled.div`
   width: 300px;
   height: 450px;
 `;
 
-export const MovieImage = styled.img`
+export const Image = styled.img`
   width: 100%;
   height: 100%;
 `;
 
-export const MovieTitle = styled.p`
+export const Title = styled.p`
   height: 48px;
   padding: 10px 50px;
   border-top: 2px solid black;

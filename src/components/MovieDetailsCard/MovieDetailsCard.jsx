@@ -1,33 +1,33 @@
-import { IMAGE_PATH } from 'constants';
+import { createValidPosterPath } from 'services';
 
 import {
-  MovieCardGenres,
-  MovieCardImage,
-  MovieCardInfo,
-  MovieCardName,
-  MovieCardText,
-  MovieCardTitle,
-  MovieCardWrapper,
+  GenresList,
+  Image,
+  Info,
+  Name,
+  Text,
+  Title,
+  Wrapper,
 } from './MovieDetailsCard.styled';
 
 export const MovieDetailsCard = ({
   data: { genres, title, overview, poster_path, vote_average: rating },
 }) => {
   return (
-    <MovieCardWrapper>
-      <MovieCardImage src={`${IMAGE_PATH}/${poster_path}`} alt={title} />
-      <MovieCardInfo>
-        <MovieCardName>{title}</MovieCardName>
-        <MovieCardText>User rating: {rating}</MovieCardText>
-        <MovieCardTitle>Overview</MovieCardTitle>
-        <MovieCardText>{overview}</MovieCardText>
-        <MovieCardTitle>Genres</MovieCardTitle>
-        <MovieCardGenres>
+    <Wrapper>
+      <Image src={createValidPosterPath(poster_path)} alt={title} />
+      <Info>
+        <Name>{title}</Name>
+        <Text>User rating: {rating}</Text>
+        <Title>Overview</Title>
+        <Text>{overview}</Text>
+        <Title>Genres</Title>
+        <GenresList>
           {genres.map(({ id, name }) => (
             <li key={id}>{name}</li>
           ))}
-        </MovieCardGenres>
-      </MovieCardInfo>
-    </MovieCardWrapper>
+        </GenresList>
+      </Info>
+    </Wrapper>
   );
 };

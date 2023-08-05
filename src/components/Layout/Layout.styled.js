@@ -16,7 +16,7 @@ export const Navigation = styled.nav`
   padding: 0 40px;
 `;
 
-export const NavigationList = styled.ul`
+export const List = styled.ul`
   display: flex;
   align-items: center;
   gap: 30px;

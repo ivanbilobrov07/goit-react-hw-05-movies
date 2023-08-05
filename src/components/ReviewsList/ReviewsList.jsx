@@ -1,13 +1,15 @@
 import { ReviewCard } from 'components/ReviewCard';
 
+import { Item } from './ReviewsList.styled';
+
 export const ReviewsList = ({ reviews }) => {
   console.log(reviews);
   return (
     <ul>
       {reviews.map(review => (
-        <li key={review.id}>
+        <Item key={review.id}>
           <ReviewCard review={review} />
-        </li>
+        </Item>
       ))}
     </ul>
   );

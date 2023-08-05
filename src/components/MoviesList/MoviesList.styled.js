@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const MovieList = styled.ul`
+export const List = styled.ul`
   max-width: 1300px;
   margin: 0 auto;
   display: flex;
@@ -9,7 +9,7 @@ export const MovieList = styled.ul`
   justify-content: center;
 `;
 
-export const MovieItem = styled.li`
+export const Item = styled.li`
   width: 300px;
   height: 500px;
   border: 2px solid black;
