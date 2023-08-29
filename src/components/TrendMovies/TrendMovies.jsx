@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import ResponsivePagination from 'react-responsive-pagination';
 
 import { fetchTrandingMovies } from 'services';
@@ -15,12 +15,13 @@ export const TrendMovies = () => {
   const [trendMovies, setTrendMovies] = useState(null);
   const [totalPages, setTotalPages] = useState(0);
 
+  const firstRender = useRef(true);
+
   useEffect(() => {
     const fetchData = async page => {
       setStatus(STATUS.PENDING);
 
       const data = await fetchTrandingMovies(page);
-      const array = new Array(data.total_pages).fill(null);
       const totalPages = data.total_pages;
 
       //This check is necessary because of it is forbiden
@@ -31,12 +32,7 @@ export const TrendMovies = () => {
         setTotalPages(totalPages);
       }
 
-      setTrendMovies(array);
-      setTrendMovies(movies => {
-        movies[page - 1] = data.results;
-
-        return movies;
-      });
+      setTrendMovies(data.results);
       setStatus(STATUS.FULLFIELD);
     };
 
@@ -44,8 +40,8 @@ export const TrendMovies = () => {
   }, []);
 
   useEffect(() => {
-    if (selectedPage === 1 || trendMovies[selectedPage - 1]) {
-      scrollToTop();
+    if (firstRender.current) {
+      firstRender.current = false;
       return;
     }
 
@@ -54,33 +50,21 @@ export const TrendMovies = () => {
 
       const data = await fetchTrandingMovies(page);
 
-      setTrendMovies(movies => {
-        movies[page - 1] = data.results;
-
-        return movies;
-      });
+      setTrendMovies(data.results);
       setStatus(STATUS.FULLFIELD);
     };
 
     fetchData(selectedPage);
-  }, [selectedPage, trendMovies]);
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-    });
-  };
-
-  const visibleImages = trendMovies && trendMovies[selectedPage - 1];
+  }, [selectedPage]);
 
   if (status === STATUS.PENDING) {
     return <Loader />;
   }
 
-  if (status === STATUS.FULLFIELD && visibleImages !== null) {
+  if (status === STATUS.FULLFIELD && trendMovies) {
     return (
       <>
-        <MoviesList movies={visibleImages} />
+        <MoviesList movies={trendMovies} />
         <PaginationWrapper>
           <ResponsivePagination
             current={selectedPage}

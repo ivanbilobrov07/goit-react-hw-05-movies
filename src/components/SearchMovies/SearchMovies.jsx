@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import ResponsivePagination from 'react-responsive-pagination';
 
 import { searchMoviesByQuery } from 'services';
@@ -15,6 +15,8 @@ export const SearchMovie = ({ query }) => {
   const [totalPages, setTotalPages] = useState(0);
   const [data, setData] = useState(null);
 
+  const firstRender = useRef(true);
+
   useEffect(() => {
     if (!query) {
       return;
@@ -24,7 +26,6 @@ export const SearchMovie = ({ query }) => {
       setStatus(STATUS.PENDING);
 
       const data = await searchMoviesByQuery(query, page);
-      const array = new Array(data.total_pages).fill(null);
       const totalPages = data.total_pages;
 
       //This check is necessary because of it is forbiden
@@ -35,12 +36,7 @@ export const SearchMovie = ({ query }) => {
         setTotalPages(totalPages);
       }
 
-      setData(array);
-      setData(movies => {
-        movies[page - 1] = data.results;
-
-        return movies;
-      });
+      setData(data.results);
       setStatus(STATUS.FULLFIELD);
     };
 
@@ -48,8 +44,8 @@ export const SearchMovie = ({ query }) => {
   }, [query]);
 
   useEffect(() => {
-    if (page === 1 || data[page - 1]) {
-      scrollToTop();
+    if (firstRender.current) {
+      firstRender.current = false;
       return;
     }
 
@@ -58,31 +54,19 @@ export const SearchMovie = ({ query }) => {
 
       const data = await searchMoviesByQuery(query, page);
 
-      setData(movies => {
-        movies[page - 1] = data.results;
-
-        return movies;
-      });
+      setData(data.results);
       setStatus(STATUS.FULLFIELD);
     };
 
     fetchData(page);
-  }, [page, data, query]);
-
-  const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-    });
-  };
-
-  const visibleImages = data && data[page - 1];
+  }, [page, query]);
 
   if (status === STATUS.PENDING) {
     return <Loader />;
-  } else if (status === STATUS.FULLFIELD && visibleImages) {
+  } else if (status === STATUS.FULLFIELD && data) {
     return (
       <>
-        <MoviesList movies={visibleImages} />
+        <MoviesList movies={data} />
         <PaginationWrapper>
           <ResponsivePagination
             current={page}

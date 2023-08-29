@@ -4,7 +4,7 @@ import { Container } from 'components/Container.styled';
 import { SearchMovie } from 'components/SearchMovies';
 
 const Movies = () => {
-  const [searchParams, setQSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get('query') ?? '';
 
   const updateQueryString = e => {
@@ -14,7 +14,7 @@ const Movies = () => {
     const query = inputRef.value;
     const nextParams = query !== '' ? { query } : {};
 
-    setQSearchParams(nextParams);
+    setSearchParams(nextParams);
     inputRef.value = '';
   };
 
